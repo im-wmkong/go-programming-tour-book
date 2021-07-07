@@ -10,8 +10,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-var calculateTime string
-var duration string
+var (
+	calculateTime string
+	duration      string
+)
 
 var timeCmd = &cobra.Command{
 	Use:   "time",
