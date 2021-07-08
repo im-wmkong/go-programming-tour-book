@@ -17,41 +17,44 @@ var (
 	tableName string
 )
 
-var sqlCmd = &cobra.Command{
-	Use:   "sql",
-	Short: "sql转换和处理",
-	Long:  "sql转换和处理",
-	Run:   func(cmd *cobra.Command, args []string) {},
-}
+var (
+	sqlCmd = &cobra.Command{
+		Use:   "sql",
+		Short: "sql转换和处理",
+		Long:  "sql转换和处理",
+		Run:   func(cmd *cobra.Command, args []string) {},
+	}
+	sql2structCmd = &cobra.Command{
+		Use:   "struct",
+		Short: "sql转换",
+		Long:  "sql转换",
+		Run:   sql2structCmdRun,
+	}
+)
 
-var sql2structCmd = &cobra.Command{
-	Use:   "struct",
-	Short: "sql转换",
-	Long:  "sql转换",
-	Run: func(cmd *cobra.Command, args []string) {
-		dbInfo := &sql2struct.DBInfo{
-			DBType:   dbType,
-			Host:     host,
-			UserName: username,
-			Password: password,
-			Charset:  charset,
-		}
-		dbModel := sql2struct.NewDBModel(dbInfo)
-		err := dbModel.Connect()
-		if err != nil {
-			log.Fatalf("dbModel.Connect err: %v", err)
-		}
-		columns, err := dbModel.GetColumns(dbName, tableName)
-		if err != nil {
-			log.Fatalf("dbModel.GetColumns err: %v", err)
-		}
-		template := sql2struct.NewStructTemplate()
-		templateColumns := template.AssemblyColumns(columns)
-		err = template.Generate(tableName, templateColumns)
-		if err != nil {
-			log.Fatalf("template.Generate err: %v", err)
-		}
-	},
+func sql2structCmdRun(cmd *cobra.Command, args []string) {
+	dbInfo := &sql2struct.DBInfo{
+		DBType:   dbType,
+		Host:     host,
+		UserName: username,
+		Password: password,
+		Charset:  charset,
+	}
+	dbModel := sql2struct.NewDBModel(dbInfo)
+	err := dbModel.Connect()
+	if err != nil {
+		log.Fatalf("dbModel.Connect err: %v", err)
+	}
+	columns, err := dbModel.GetColumns(dbName, tableName)
+	if err != nil {
+		log.Fatalf("dbModel.GetColumns err: %v", err)
+	}
+	template := sql2struct.NewStructTemplate()
+	templateColumns := template.AssemblyColumns(columns)
+	err = template.Generate(tableName, templateColumns)
+	if err != nil {
+		log.Fatalf("template.Generate err: %v", err)
+	}
 }
 
 func init() {

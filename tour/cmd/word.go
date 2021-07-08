@@ -32,25 +32,27 @@ var desc = strings.Join([]string{
 var wordCmd = &cobra.Command{
 	Use:   "word",
 	Short: "单词格式转换",
-	Long:  "支持多种单词格式转换",
-	Run: func(cmd *cobra.Command, args []string) {
-		var content string
-		switch mode {
-		case ModeUpper:
-			content = word.ToUpper(str)
-		case ModeLower:
-			content = word.ToLower(str)
-		case ModeUnderscoreToUpperCamelCase:
-			content = word.UnderscoreToUpperCamelCase(str)
-		case ModeUnderscoreToLowerCamelCase:
-			content = word.UnderscoreToLowerCamelCase(str)
-		case ModeCamelCaseToUnderscore:
-			content = word.CamelCaseToUnderscore(str)
-		default:
-			log.Fatalf("暂不支持该转换模式，请执行 help word 查看帮助文档")
-		}
-		log.Printf("输出结果: %s", content)
-	},
+	Long:  desc,
+	Run:   wordCmdRun,
+}
+
+func wordCmdRun(cmd *cobra.Command, args []string) {
+	var content string
+	switch mode {
+	case ModeUpper:
+		content = word.ToUpper(str)
+	case ModeLower:
+		content = word.ToLower(str)
+	case ModeUnderscoreToUpperCamelCase:
+		content = word.UnderscoreToUpperCamelCase(str)
+	case ModeUnderscoreToLowerCamelCase:
+		content = word.UnderscoreToLowerCamelCase(str)
+	case ModeCamelCaseToUnderscore:
+		content = word.CamelCaseToUnderscore(str)
+	default:
+		log.Fatalf("暂不支持该转换模式，请执行 help word 查看帮助文档")
+	}
+	log.Printf("输出结果: %s", content)
 }
 
 func init() {

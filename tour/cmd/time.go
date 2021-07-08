@@ -15,49 +15,53 @@ var (
 	duration      string
 )
 
-var timeCmd = &cobra.Command{
-	Use:   "time",
-	Short: "时间格式处理",
-	Long:  "时间格式处理",
-	Run:   func(cmd *cobra.Command, args []string) {},
+var (
+	timeCmd = &cobra.Command{
+		Use:   "time",
+		Short: "时间格式处理",
+		Long:  "时间格式处理",
+		Run:   func(cmd *cobra.Command, args []string) {},
+	}
+	nowTimeCmd = &cobra.Command{
+		Use:   "now",
+		Short: "获取当前时间",
+		Long:  "获取当前时间",
+		Run:   nowTimeCmdRun,
+	}
+	calculateTimeCmd = &cobra.Command{
+		Use:   "calc",
+		Short: "计算所需时间",
+		Long:  "计算所需时间",
+		Run:   calculateTimeCmdRun,
+	}
+)
+
+func nowTimeCmdRun(cmd *cobra.Command, args []string) {
+	nowTime := timer.GetNowTime()
+	log.Printf("输出结果：%s, %d", nowTime.Format("2006-01-02 15:04:05"), nowTime.Unix())
 }
 
-var nowTimeCmd = &cobra.Command{
-	Use:   "now",
-	Short: "获取当前时间",
-	Long:  "获取当前时间",
-	Run: func(cmd *cobra.Command, args []string) {
-		nowTime := timer.GetNowTime()
-		log.Printf("输出结果：%s, %d", nowTime.Format("2006-01-02 15:04:05"), nowTime.Unix())
-	},
-}
-
-var calculateTimeCmd = &cobra.Command{
-	Use:   "calc",
-	Short: "计算所需时间",
-	Long:  "计算所需时间",
-	Run: func(cmd *cobra.Command, args []string) {
-		var currentTimer time.Time
-		var layout = "2006-01-02 15:04:05"
-		if calculateTime == "" {
-			currentTimer = timer.GetNowTime()
-		} else {
-			var err error
-			if !strings.Contains(calculateTime, " ") {
-				layout = "2006-01-02"
-			}
-			currentTimer, err = time.Parse(layout, calculateTime)
-			if err != nil {
-				t, _ := strconv.Atoi(calculateTime)
-				currentTimer = time.Unix(int64(t), 0)
-			}
+func calculateTimeCmdRun(cmd *cobra.Command, args []string) {
+	var currentTimer time.Time
+	var layout = "2006-01-02 15:04:05"
+	if calculateTime == "" {
+		currentTimer = timer.GetNowTime()
+	} else {
+		var err error
+		if !strings.Contains(calculateTime, " ") {
+			layout = "2006-01-02"
 		}
-		t, err := timer.GetCalculateTime(currentTimer, duration)
+		currentTimer, err = time.Parse(layout, calculateTime)
 		if err != nil {
-			log.Fatalf("timer.GetCalculateTime err: %v", err)
+			t, _ := strconv.Atoi(calculateTime)
+			currentTimer = time.Unix(int64(t), 0)
 		}
-		log.Printf("输出结果：%s, %d", t.Format(layout), t.Unix())
-	},
+	}
+	t, err := timer.GetCalculateTime(currentTimer, duration)
+	if err != nil {
+		log.Fatalf("timer.GetCalculateTime err: %v", err)
+	}
+	log.Printf("输出结果：%s, %d", t.Format(layout), t.Unix())
 }
 
 func init() {
