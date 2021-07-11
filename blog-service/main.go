@@ -9,13 +9,19 @@ import (
 	"github.com/go-programming-tour-book/blog-service/global"
 	"github.com/go-programming-tour-book/blog-service/internal/model"
 	"github.com/go-programming-tour-book/blog-service/internal/routers"
+	"github.com/go-programming-tour-book/blog-service/pkg/logger"
 	"github.com/go-programming-tour-book/blog-service/pkg/setting"
+	"gopkg.in/natefinch/lumberjack.v2"
 )
 
 func init() {
 	err := setupSetting()
 	if err != nil {
 		log.Fatalf("init.setupSetting err: %v", err)
+	}
+	err = setupLogger()
+	if err != nil {
+		log.Fatalf("init.setupLogger err: %v", err)
 	}
 }
 
@@ -60,5 +66,15 @@ func setupDBEngine() error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func setupLogger() error {
+	global.Logger = logger.NewLogger(&lumberjack.Logger{
+		Filename:  global.AppSertting.LogSavePath + "/" + global.AppSertting.LogFileName + global.AppSertting.LogFileExt,
+		MaxSize:   600,
+		MaxAge:    10,
+		LocalTime: true,
+	}, "", log.LstdFlags).WithCaller(2)
 	return nil
 }
