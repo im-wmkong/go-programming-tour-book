@@ -21,7 +21,7 @@ func (a Article) Get(c *gin.Context) {}
 
 // @Summary 获取多个文章
 // @Produce  json
-// @Param name query string false "文章名称" maxlength(100)
+// @Param title query string false "文章标题" maxlength(100)
 // @Param state query int false "状态" Enums(0, 1) default(1)
 // @Param page query int false "页码"
 // @Param page_size query int false "每页数量"
@@ -35,7 +35,7 @@ func (a Article) List(c *gin.Context) {}
 // @Produce  json
 // @Param title body string true "文章标题" minlength(3) maxlength(100)
 // @Param desc body string true "文章描述" minlength(3) maxlength(100)
-// @Param content body string true "文章内容" minlength(3) maxlength(100)
+// @Param content body string true "文章内容" minlength(3) maxlength(1000)
 // @Param cover_image_url body string true "封面图片地址" minlength(3) maxlength(100)
 // @Param state body int false "状态" Enums(0, 1) default(1)
 // @Param created_by body string true "创建者" minlength(3) maxlength(100)
@@ -50,7 +50,7 @@ func (a Article) Create(c *gin.Context) {}
 // @Param id path int true "文章 ID"
 // @Param title body string true "文章标题" minlength(3) maxlength(100)
 // @Param desc body string true "文章描述" minlength(3) maxlength(100)
-// @Param content body string true "文章内容" minlength(3) maxlength(100)
+// @Param content body string true "文章内容" minlength(3) maxlength(1000)
 // @Param cover_image_url body string true "封面图片地址" minlength(3) maxlength(100)
 // @Param state body int false "状态" Enums(0, 1) default(1)
 // @Param modified_by body string true "修改者" minlength(3) maxlength(100)
