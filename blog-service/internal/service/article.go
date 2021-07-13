@@ -26,7 +26,7 @@ type UpdateArticleRequest struct {
 	Content       string `form:"content" binding:"required,min=3,max=1000"`
 	CoverImageUrl string `form:"cover_image_url" binding:"required,min=3,max=1000"`
 	State         uint8  `form:"state" binding:"required,oneof=0 1"`
-	ModifiedBy    string `form:"modified_by" binding:"required,min=3,max=100"`
+	UpdatedBy     string `form:"updated_by" binding:"required,min=3,max=100"`
 }
 
 type DeleteArticleRequest struct {
