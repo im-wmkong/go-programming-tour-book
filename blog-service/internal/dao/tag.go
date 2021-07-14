@@ -20,21 +20,23 @@ func (d *Dao) CreateTag(name string, state uint8, createdBy string) error {
 	tag := model.Tag{
 		Name:  name,
 		State: state,
-		Model: &model.Model{CreatedBy: createdBy},
 	}
+	tag.CreatedBy = createdBy
 	return tag.Create(d.engine)
 }
 
-func (d *Dao) UpdateTag(id uint32, name string, state uint8, updatedBy string) error {
+func (d *Dao) UpdateTag(id uint, name string, state uint8, updatedBy string) error {
 	tag := model.Tag{
 		Name:  name,
 		State: state,
-		Model: &model.Model{ID: id, UpdatedBy: updatedBy},
 	}
+	tag.UpdatedBy = updatedBy
+	tag.ID = id
 	return tag.Update(d.engine)
 }
 
-func (d *Dao) DeleteTag(id uint32) error {
-	tag := model.Tag{Model: &model.Model{ID: id}}
+func (d *Dao) DeleteTag(id uint) error {
+	tag := model.Tag{}
+	tag.ID = id
 	return tag.Delete(d.engine)
 }

@@ -2,7 +2,6 @@ package model
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/go-programming-tour-book/blog-service/global"
 	"github.com/go-programming-tour-book/blog-service/pkg/setting"
@@ -13,12 +12,13 @@ import (
 )
 
 type Model struct {
-	ID        uint32         `gorm:"primary_key" json:"id"`
-	CreatedBy string         `json:"created_by"`
-	UpdatedBy string         `json:"updated_by"`
-	CreatedAt time.Time      `json:"created_at"`
-	UpdatedAt time.Time      `json:"updated_at"`
-	DeletedAt gorm.DeletedAt `json:"deleted_at"`
+	gorm.Model
+	CreatedBy string `json:"created_by"`
+	UpdatedBy string `json:"updated_by"`
+	// ID        uint32         `gorm:"primary_key" json:"id"`
+	// CreatedAt time.Time      `json:"created_at"`
+	// UpdatedAt time.Time      `json:"updated_at"`
+	// DeletedAt gorm.DeletedAt `json:"deleted_at"`
 }
 
 func NewDBEngine(databaseSetting *setting.DatabaseSettingS) (*gorm.DB, error) {
