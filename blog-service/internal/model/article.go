@@ -15,7 +15,3 @@ type ArticleSwagger struct {
 	List  []*Article
 	Pager *app.Pager
 }
-
-func (a Article) TableName() string {
-	return "blog_article"
-}
