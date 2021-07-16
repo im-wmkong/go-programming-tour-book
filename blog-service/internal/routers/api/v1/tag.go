@@ -37,7 +37,7 @@ func (t Tag) Get(c *gin.Context) {}
 func (t Tag) List(c *gin.Context) {
 	param := request.TagListRequest{}
 	response := app.NewResponse(c)
-	if valid, errs := app.BindAndValid(c, &param); !valid {
+	if valid, errs := app.BindAndValid(c, param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
@@ -73,7 +73,7 @@ func (t Tag) Create(c *gin.Context) {
 	param := request.CreateTagRequest{}
 	response := app.NewResponse(c)
 
-	if valid, errs := app.BindAndValid(c, &param); !valid {
+	if valid, errs := app.BindAndValid(c, param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
@@ -126,7 +126,7 @@ func (t Tag) Update(c *gin.Context) {
 func (t Tag) Delete(c *gin.Context) {
 	param := request.DeleteTagRequest{}
 	response := app.NewResponse(c)
-	if valid, errs := app.BindAndValid(c, &param); !valid {
+	if valid, errs := app.BindAndValid(c, param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
