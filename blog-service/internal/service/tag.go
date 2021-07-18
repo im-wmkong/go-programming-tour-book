@@ -7,19 +7,19 @@ import (
 )
 
 func (s *Service) CountTag(param *request.CountTagRequest) (int, error) {
-	return s.dao.CountTag(param.Name, param.State)
+	return s.dao.CountTag(param.Name, *param.State)
 }
 
 func (s *Service) GetTagList(param *request.TagListRequest, pager *app.Pager) ([]*model.Tag, error) {
-	return s.dao.GetTagList(param.Name, param.State, pager.Page, pager.PageSize)
+	return s.dao.GetTagList(param.Name, *param.State, pager.Page, pager.PageSize)
 }
 
 func (s *Service) CreateTag(param *request.CreateTagRequest) error {
-	return s.dao.CreateTag(param.Name, param.State, param.CreatedBy)
+	return s.dao.CreateTag(param.Name, *param.State, param.CreatedBy)
 }
 
 func (s *Service) UpdateTag(id uint, param *request.UpdateTagRequest) error {
-	return s.dao.UpdateTag(id, param.Name, param.State, param.UpdatedBy)
+	return s.dao.UpdateTag(id, param.Name, *param.State, param.UpdatedBy)
 }
 
 func (s *Service) DeleteTag(id uint) error {

@@ -52,8 +52,8 @@ func (t Tag) Create(db *gorm.DB) error {
 	return db.Create(&t).Error
 }
 
-func (t Tag) Update(db *gorm.DB) error {
-	return db.Save(&t).Error
+func (t Tag) Update(db *gorm.DB, values interface{}) error {
+	return db.Model(&t).Where("? IS NULL", "deleted_at").Updates(values).Error
 }
 
 func (t Tag) Delete(db *gorm.DB) error {
