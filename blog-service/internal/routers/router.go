@@ -3,8 +3,8 @@ package routers
 import (
 	"github.com/gin-gonic/gin"
 	_ "github.com/go-programming-tour-book/blog-service/docs"
+	"github.com/go-programming-tour-book/blog-service/internal/controller"
 	"github.com/go-programming-tour-book/blog-service/internal/middleware"
-	v1 "github.com/go-programming-tour-book/blog-service/internal/routers/api/v1"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"github.com/swaggo/gin-swagger/swaggerFiles"
 )
@@ -14,8 +14,8 @@ func NewRouter() *gin.Engine {
 	r.Use(gin.Logger(), gin.Recovery())
 	r.Use(middleware.Translations(), middleware.IDValidator())
 
-	tag := v1.NewTag()
-	article := v1.NewArticle()
+	tag := controller.NewTag()
+	article := controller.NewArticle()
 	apiv1 := r.Group("/api/v1")
 	{
 		apiv1.POST("/tags", tag.Create)
