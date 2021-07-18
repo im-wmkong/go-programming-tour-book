@@ -32,22 +32,31 @@ func (v ValidErrors) Errors() []string {
 }
 
 func BindAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
+	err := c.ShouldBind(v)
+	return transErr(c, err)
+}
+
+func BindUriAndValid(c *gin.Context, v interface{}) (bool, ValidErrors) {
+	err := c.ShouldBindUri(v)
+	return transErr(c, err)
+}
+
+func transErr(c *gin.Context, err error) (bool, ValidErrors) {
+	if err == nil {
+		return true, nil
+	}
 	var errs ValidErrors
-	err := c.ShouldBind(&v)
-	if err != nil {
-		v := c.Value("trans")
-		trans, _ := v.(ut.Translator)
-		verrs, ok := err.(validator.ValidationErrors)
-		if !ok {
-			return false, errs
-		}
-		for key, value := range verrs.Translate(trans) {
-			errs = append(errs, &ValidError{
-				Key:     key,
-				Meaasge: value,
-			})
-		}
+	v := c.Value("trans")
+	trans, _ := v.(ut.Translator)
+	verrs, ok := err.(validator.ValidationErrors)
+	if !ok {
 		return false, errs
 	}
-	return true, nil
+	for key, value := range verrs.Translate(trans) {
+		errs = append(errs, &ValidError{
+			Key:     key,
+			Meaasge: value,
+		})
+	}
+	return false, errs
 }

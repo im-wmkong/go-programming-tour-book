@@ -12,7 +12,7 @@ import (
 func NewRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(gin.Logger(), gin.Recovery())
-	r.Use(middleware.Translations())
+	r.Use(middleware.Translations(), middleware.IDValidator())
 
 	tag := v1.NewTag()
 	article := v1.NewArticle()

@@ -18,10 +18,10 @@ func (s *Service) CreateTag(param *request.CreateTagRequest) error {
 	return s.dao.CreateTag(param.Name, param.State, param.CreatedBy)
 }
 
-func (s *Service) UpdateTag(param *request.UpdateTagRequest) error {
-	return s.dao.UpdateTag(param.ID, param.Name, param.State, param.UpdatedBy)
+func (s *Service) UpdateTag(id uint, param *request.UpdateTagRequest) error {
+	return s.dao.UpdateTag(id, param.Name, param.State, param.UpdatedBy)
 }
 
-func (s *Service) DeleteTag(param *request.DeleteTagRequest) error {
-	return s.dao.DeleteTag(param.ID)
+func (s *Service) DeleteTag(id uint) error {
+	return s.dao.DeleteTag(id)
 }

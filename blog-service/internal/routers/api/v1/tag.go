@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"strconv"
+
 	"github.com/gin-gonic/gin"
 	"github.com/go-programming-tour-book/blog-service/global"
 	"github.com/go-programming-tour-book/blog-service/internal/request"
@@ -37,7 +39,7 @@ func (t Tag) Get(c *gin.Context) {}
 func (t Tag) List(c *gin.Context) {
 	param := request.TagListRequest{}
 	response := app.NewResponse(c)
-	if valid, errs := app.BindAndValid(c, param); !valid {
+	if valid, errs := app.BindAndValid(c, &param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
@@ -73,7 +75,7 @@ func (t Tag) Create(c *gin.Context) {
 	param := request.CreateTagRequest{}
 	response := app.NewResponse(c)
 
-	if valid, errs := app.BindAndValid(c, param); !valid {
+	if valid, errs := app.BindAndValid(c, &param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid errs: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
@@ -101,13 +103,14 @@ func (t Tag) Create(c *gin.Context) {
 func (t Tag) Update(c *gin.Context) {
 	param := request.UpdateTagRequest{}
 	response := app.NewResponse(c)
-	if valid, errs := app.BindAndValid(c, param); !valid {
+	if valid, errs := app.BindAndValid(c, &param); !valid {
 		global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
 		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
 		return
 	}
 	svc := service.New(c.Request.Context())
-	if err := svc.UpdateTag(&param); err != nil {
+	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
+	if err := svc.UpdateTag(uint(id), &param); err != nil {
 		global.Logger.Errorf(c, "service.UpdateTag err: %v", err)
 		response.ToErrResponse(errcode.ErrorUpdateTagFail)
 		return
@@ -124,15 +127,10 @@ func (t Tag) Update(c *gin.Context) {
 // @Failure 500 {object} errcode.Error "内部错误"
 // @Router /api/v1/tags/{id} [delete]
 func (t Tag) Delete(c *gin.Context) {
-	param := request.DeleteTagRequest{}
+	id, _ := strconv.ParseUint(c.Param("id"), 10, 32)
 	response := app.NewResponse(c)
-	if valid, errs := app.BindAndValid(c, param); !valid {
-		global.Logger.Errorf(c, "app.BindAndValid err: %v", errs)
-		response.ToErrResponse(errcode.InvalidParams.WithDetails(errs.Errors()...))
-		return
-	}
 	svc := service.New(c.Request.Context())
-	if err := svc.DeleteTag(&param); err != nil {
+	if err := svc.DeleteTag(uint(id)); err != nil {
 		global.Logger.Errorf(c, "service.DeleteTag err: %v", err)
 		response.ToErrResponse(errcode.ErrorUpdateTagFail)
 		return
