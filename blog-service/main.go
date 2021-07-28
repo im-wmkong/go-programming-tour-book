@@ -55,7 +55,7 @@ func setupSetting() error {
 	if err != nil {
 		return err
 	}
-	err = setting.ReadSection("App", &global.AppSertting)
+	err = setting.ReadSection("App", &global.AppSetting)
 	if err != nil {
 		return err
 	}
@@ -79,7 +79,7 @@ func setupDBEngine() error {
 
 func setupLogger() error {
 	global.Logger = logger.NewLogger(&lumberjack.Logger{
-		Filename:  global.AppSertting.LogSavePath + "/" + global.AppSertting.LogFileName + global.AppSertting.LogFileExt,
+		Filename:  global.AppSetting.LogSavePath + "/" + global.AppSetting.LogFileName + global.AppSetting.LogFileExt,
 		MaxSize:   600,
 		MaxAge:    10,
 		LocalTime: true,

@@ -6,6 +6,6 @@ import (
 
 var (
 	ServerSetting   *setting.ServerSettingS
-	AppSertting     *setting.AppSerttingS
+	AppSetting      *setting.AppSettingS
 	DatabaseSetting *setting.DatabaseSettingS
 )

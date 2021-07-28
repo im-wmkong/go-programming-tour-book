@@ -9,12 +9,16 @@ type ServerSettingS struct {
 	WriteTimeout time.Duration
 }
 
-type AppSerttingS struct {
-	DefaultPageSize int
-	MaxPageSize     int
-	LogSavePath     string
-	LogFileName     string
-	LogFileExt      string
+type AppSettingS struct {
+	DefaultPageSize      int
+	MaxPageSize          int
+	LogSavePath          string
+	LogFileName          string
+	LogFileExt           string
+	UploadSavePath       string
+	UploadServerUrl      string
+	UploadImageMaxSize   int
+	UploadImageAllowExts []string
 }
 
 type DatabaseSettingS struct {
